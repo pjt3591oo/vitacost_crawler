@@ -1,0 +1,21 @@
+import requests as rq
+from bs4 import BeautifulSoup
+
+url = "https://www.vitacost.com/magnesium-50?mp=1&pg=2"
+
+# 해당 값이 없으면 timeout 발생
+# cookie가 없으면 상품의 품절 여부인 Detail 텍스트가 아닌 Add to chart만 출력됨
+headers = {
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+  'cookie': 'vitaguid=7d66983f-001b-48a2-a795-6540542af78a; CtGUID=0415a341-5509-4a76-95bc-63f909e1d53e; FirstPartyCookie=True; GuestCustTransit=Zip=&Country=109; _sdsat_Customer Segment=; _fbp=fb.1.1591661443933.1587003963; s_ecid=MCMID%7C85973490785519529511577933545079449455; vcemailtop=true; _abck=B9B62A5E0CC78651FC4F7FF3F6F70F03~0~YAAQRzVDF2U/OJNyAQAAUEBqlgT6SWEIuOvNScCQeJIJosTXxaEu9Oo0I+qN9YzZ9Ig5lqvDlnAN7LHuuRv0PDV7Lna4Xs0SEy61S6SinZPooh+LLegmbIZ8J6DiMbXWiLRH/BCK9mNgkxqwpkeSll6g23AyNWZenIrrAvpQj5cdrty0BVU0PpU+KvHASHOHnJQXmIVH9avRPOe5bKcP+KtnChUI+goriojmFzvWw2/tn3gsVs572lcVfVmGQeUj3CHHDd33gzSM8ew6vZOjcrkoxAukNrzmEh/4lf5JUzOvrxOYMNmPvW2vQMO4QP0ZYSZ05WdSxqGX~-1~-1~-1; __gads=ID=8ab0bf6fdc1fd327:T=1591661444:S=ALNI_MZX_P36ZV4f8PmJJl4P9A37hrhDvw; _gcl_au=1.1.1450074016.1591661446; sbt_i=7ZGI1ZGU5NDYtMTU2NC00YjE0LWIwNDktNGZkZGI3OGUyNGU5OzNmJhMWRlMzYtOTY5OC00ZmNhLTljNWItNjc0YTM3ZWRlMmM2OzsA=; th_u=j%26%23BXO7qaVk~%26xuNCm%238; th_v=j%26%23BXO7qaVk~%26xuNCm%238; ASP.NET_SessionId=jm2nq04bfldcri5gbrmrfbqa; origin=lvdc; IsNewUser=False; __Sally=d77a5c583e52423f85f03989b139f1cf; useAjaxForCartRefresh=true; akaalb_Vitacost_ALB=~op=VC_vitacost:lvdc|~rv=27~m=lvdc:0|~os=d28d1bedc64938865acbb3d9b52a5c3b~id=bd66027d7e1c537b0b821ff42e6f71a4; bm_sz=D59C3AD27ACA22BB5D8A9BD58FB75F49~YAAQRzVDF3yY3qdyAQAAxbKyqggBHPcisIKEmgV0mzk/817gsH2fXTjDq5VWS1TKP93ldbNjiDiOg5j5kDdYni/6J0fwcDVh18AaYiYNPCr0oy0D+4QBksfxsG1GK4W2v5uI4WSjG5QNADah5cDyed4ujx5j6bqV8QCA30DH/+XZpKEVoiVOEdkImJYwfwwiz2A=; check=true; AMCVS_A88E776A5245B3F40A490D44%40AdobeOrg=1; AMCV_A88E776A5245B3F40A490D44%40AdobeOrg=-1712354808%7CMCIDTS%7C18426%7CMCMID%7C85973490785519529511577933545079449455%7CMCAAMLH-1592606538%7C11%7CMCAAMB-1592606538%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1592008938s%7CNONE%7CMCAID%7CNONE%7CvVersion%7C4.3.0; s_cc=true; _hjid=e0152a20-97f8-403a-9b0b-7e1a73a7aae5; productcomparison=null; s_sq=%5B%5BB%5D%5D; TS014a96aa_77=08abb0bc28ab2800ebad14fc9c57ffaebe1acfbe328189eeb5f10c4266718d591a1a043d16814cec8d2805bf24e893da0855cd47a2823800a20cf78e31dc6f3c6f6092d329b0ac247f55180525321679039e86e28b9ee3064061c1d4bfd5ac46bf4d9d4fc933bdf355ad324d80f8226e; _hjIncludedInSample=1; TS014a96aa=01bd4ca7ce33a8275675bcca6ae5a43997011b452fade5fb7d8a3de253feeb9bd0e02ca21c6bde120f6570cb7dbc8e758014f645470c33fc07dd24abe1605f29e524c665dafacac142165789bdb0ac20c1a66f9879c52c27c779861f2b384a0dad8abeb4f17c676cd1601472bafa0a2463c584519d63e8e888491fef6734633d70dce1a6ea14094077b350aa2f86bb1617a1240a5f8fdc10a1fd34294c97a2fb607aa10b77000d25ca650c1e671410a3c9f9612679c166113f8e50a93f830ad2054febca4b; AKA_A2=A; mbox=PC#b684340d055b4834a179f270c005e880.32_0#1654906245|session#40ebef09216c47bf8d574400ccdeffc0#1592008829; _uetsid=75ee9c60-2814-fec6-ed8a-5867d784ee53; _uetvid=4174dd71-72d0-b878-35ec-a99d1d834772; f5avr1288675822aaaaaaaaaaaaaaaa=MDCLCIMMAOADBAFMKKGGKAFKGBCPPGKDOLICLGLLPNEBGKJLBAOLBILEEPOLJLLDKLICDJMICDLMHAIBHBEACAJCCLBKJMONEKBECPCFMKFCEOOKFHKDKLMLDBGNNBGG; ak_bmsc=77C0C21B747DAAD4EA2B46171C2B3CA717D3754428590000A822E45E22249F34~plb908BCM4UZ65MRcWiSfYPSnqQ2Rf/2778LlowONH+UyBAR3VLFFuD5c6wFFEZN7bRSqGxC00aWzAs4SLzXOMxXiFB5O8cHCI5PUMzUqCR1vj9b65LRJQm7z9yPMNzS/9REtMxtH9IK6jSv2SYlnOm3t8NO7XP+jSB/vGhHAl7g38Z8fAQQxvOsQH81q4hP12Ah/bFvmSVZ/cp7p5XnZCJTowBYqV43SOz0uDMMtsViI=; RT="sl=0&ss=1592006961816&tt=0&obo=0&sh=&dm=vitacost.com&si=d605889d-8c39-456e-9d6e-c6c81f2d2641&bcn=%2F%2F684fc53c.akstat.io%2F&r=https%3A%2F%2Fwww.vitacost.com%2Fmagnesium-50%3Fmp%3D1%26pg%3D2&ul=1592009468727"'
+}
+
+res = rq.get(url, headers=headers)
+    
+soup = BeautifulSoup(res.content, 'lxml')
+items = soup.select('.productWrapper .product-block')
+for idx, item in enumerate(items):
+  print(idx)
+  print(item.find('div', {"class": "pb-image"}).get('style'))
+  print(item.find('div', {"class": "pb-lower"}).find('a', {"class": "button1"}).text)
+  print()
